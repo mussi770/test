@@ -1,0 +1,217 @@
+/* ============================================================
+   BACK TO LIFE — עיצוב לטפסים החיצוניים באוריגמי
+   גרסה 1 — בסיס עובד לפני התאמה למחלקות האמיתיות של הטופס
+   מחברים דרך: הגדרות הטופס ← קישור לקובץ CSS חיצוני
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Frank+Ruhl+Libre:wght@500;700&display=swap');
+
+/* ------------------------------------------------------------
+   1. טוקנים — כל שינוי צבע או ריווח מתחיל ונגמר כאן
+   ------------------------------------------------------------ */
+:root {
+  --btl-bg:        #EEF2EF;   /* רקע הדף — מרווה בהיר */
+  --btl-surface:   #FFFFFF;   /* כרטיס הטופס */
+  --btl-ink:       #14251F;   /* טקסט ראשי */
+  --btl-muted:     #6E807A;   /* תוויות ומשנה */
+  --btl-line:      #D7E0DB;   /* מסגרות */
+  --btl-accent:    #2F6B58;   /* ירוק אקליפטוס — כפתורים ופוקוס */
+  --btl-accent-hi: #245445;   /* מצב hover */
+  --btl-error:     #B4472F;
+
+  --btl-radius:    10px;
+  --btl-gap:       18px;
+  --btl-shadow:    0 1px 2px rgba(20,37,31,.04), 0 8px 28px rgba(20,37,31,.06);
+
+  --btl-font:      'Assistant', system-ui, sans-serif;
+  --btl-display:   'Frank Ruhl Libre', 'Assistant', serif;
+}
+
+/* ------------------------------------------------------------
+   2. בסיס — RTL, פונט, רקע
+   ------------------------------------------------------------ */
+body {
+  font-family: var(--btl-font) !important;
+  background: var(--btl-bg) !important;
+  color: var(--btl-ink) !important;
+  direction: rtl;
+  text-align: right;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* כרטיס הטופס — מכוון למכולה הראשית.
+   אם באוריגמי שם המחלקה שונה, מחליפים כאן בלבד. */
+form,
+.form-container,
+.form-wrapper {
+  max-width: 680px;
+  margin: 40px auto;
+  padding: 36px 32px;
+  background: var(--btl-surface);
+  border: 1px solid var(--btl-line);
+  border-radius: var(--btl-radius);
+  box-shadow: var(--btl-shadow);
+}
+
+/* ------------------------------------------------------------
+   3. כותרות
+   ------------------------------------------------------------ */
+h1, h2, .form-title {
+  font-family: var(--btl-display) !important;
+  font-weight: 700;
+  color: var(--btl-ink);
+  letter-spacing: -.01em;
+  margin: 0 0 8px;
+}
+h1, .form-title { font-size: 30px; }
+h2 { font-size: 21px; margin-top: 32px; }
+
+/* כותרת משנה / תיאור הטופס */
+.form-description,
+.form-subtitle {
+  color: var(--btl-muted);
+  font-size: 15px;
+  margin-bottom: 28px;
+}
+
+/* ------------------------------------------------------------
+   4. שדות
+   ------------------------------------------------------------ */
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--btl-muted);
+  margin-bottom: 6px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+select,
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--btl-font) !important;
+  font-size: 16px;              /* מתחת ל-16 iOS מזיז את המסך בפוקוס */
+  color: var(--btl-ink);
+  background: var(--btl-surface);
+  border: 1px solid var(--btl-line) !important;
+  border-radius: 8px !important;
+  padding: 11px 14px;
+  margin-bottom: var(--btl-gap);
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+input:hover,
+select:hover,
+textarea:hover { border-color: #B9C7C1 !important; }
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--btl-accent) !important;
+  box-shadow: 0 0 0 3px rgba(47,107,88,.15);
+}
+
+textarea { min-height: 110px; resize: vertical; }
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' fill='none' stroke='%236E807A' stroke-width='1.6'/></svg>");
+  background-repeat: no-repeat;
+  background-position: left 14px center;
+  padding-left: 38px;
+}
+
+input::placeholder,
+textarea::placeholder { color: #A6B3AE; }
+
+/* שדה חובה */
+label.required::after,
+.required-mark {
+  content: " *";
+  color: var(--btl-error);
+}
+
+/* ------------------------------------------------------------
+   5. כפתורים
+   ------------------------------------------------------------ */
+button,
+input[type="submit"],
+.btn-primary {
+  font-family: var(--btl-font) !important;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff !important;
+  background: var(--btl-accent) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 13px 30px;
+  cursor: pointer;
+  transition: background .15s ease, transform .06s ease;
+}
+button:hover,
+input[type="submit"]:hover,
+.btn-primary:hover { background: var(--btl-accent-hi) !important; }
+
+button:active { transform: translateY(1px); }
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--btl-accent);
+  outline-offset: 2px;
+}
+
+button[disabled] { opacity: .5; cursor: not-allowed; }
+
+/* ------------------------------------------------------------
+   6. הודעות
+   ------------------------------------------------------------ */
+.error,
+.field-error,
+.validation-message {
+  color: var(--btl-error);
+  font-size: 13.5px;
+  margin: -10px 0 14px;
+}
+
+.success,
+.thank-you {
+  background: rgba(47,107,88,.08);
+  border: 1px solid rgba(47,107,88,.25);
+  border-radius: var(--btl-radius);
+  padding: 22px;
+  color: var(--btl-ink);
+}
+
+/* ------------------------------------------------------------
+   7. מובייל
+   ------------------------------------------------------------ */
+@media (max-width: 640px) {
+  form,
+  .form-container,
+  .form-wrapper {
+    margin: 0;
+    padding: 24px 18px;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    min-height: 100vh;
+  }
+  h1, .form-title { font-size: 25px; }
+  button,
+  input[type="submit"] { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
