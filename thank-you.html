@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>הזמנים נקבעו בהצלחה</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Frank+Ruhl+Libre:wght@500;700&display=swap');
+
+  :root{
+    --bg:        #E9EFEF;
+    --surface:   #FFFFFF;
+    --ink:       #16202E;
+    --muted:     #6E7A85;
+    --line:      #E3E9E9;
+    --navy:      #17233A;
+    --accent:    #2F6B58;
+    --accent-hi: #245445;
+    --radius:    16px;
+    --shadow:    0 1px 2px rgba(20,32,46,.04), 0 18px 45px rgba(20,32,46,.10);
+    --font:      'Assistant', system-ui, sans-serif;
+    --display:   'Frank Ruhl Libre', 'Assistant', serif;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+
+  body{
+    font-family:var(--font);
+    background:var(--bg);
+    color:var(--ink);
+    direction:rtl;
+    text-align:center;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .card{
+    width:100%;
+    max-width:560px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:48px 40px;
+  }
+
+  .badge{
+    width:84px;
+    height:84px;
+    margin:0 auto 26px;
+    border-radius:50%;
+    background:rgba(47,107,88,.10);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    animation:pop .4s cubic-bezier(.2,.8,.3,1.4) both;
+  }
+  .badge svg{ width:42px; height:42px; }
+  .badge svg path{
+    stroke-dasharray:48;
+    stroke-dashoffset:48;
+    animation:draw .5s .25s ease forwards;
+  }
+
+  h1{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:28px;
+    letter-spacing:-.01em;
+    margin:0 0 12px;
+    color:var(--ink);
+  }
+
+  p{
+    font-size:16.5px;
+    line-height:1.7;
+    color:var(--muted);
+    margin:0 auto;
+    max-width:420px;
+  }
+
+  .note{
+    margin-top:28px;
+    padding:16px 18px;
+    background:rgba(47,107,88,.07);
+    border:1px solid rgba(47,107,88,.20);
+    border-radius:12px;
+    font-size:15px;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+  }
+  .note svg{ width:20px; height:20px; flex-shrink:0; }
+
+  .powered{
+    margin-top:32px;
+    font-size:13px;
+    color:#9AA6A6;
+  }
+
+  @keyframes pop{ from{ transform:scale(.6); opacity:0; } to{ transform:scale(1); opacity:1; } }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+
+  @media (max-width:520px){
+    .card{ padding:38px 24px; }
+    h1{ font-size:24px; }
+    p{ font-size:16px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; }
+    .badge svg path{ stroke-dashoffset:0; }
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="badge" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M4 12.5l5 5L20 6.5" stroke="#2F6B58" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <h1>הזמנים נקבעו בהצלחה!</h1>
+
+    <p>
+      תודה רבה 🙏 שעות הזמינות שבחרת נקלטו במערכת בהצלחה.
+    </p>
+
+    <div class="note">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 8v4l3 2" stroke="#17233A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="12" r="9" stroke="#17233A" stroke-width="1.8"/>
+      </svg>
+      <span>נעדכן אותך ברגע שתיקבע פגישת אימון.</span>
+    </div>
+
+    <div class="powered">Back to Life</div>
+  </main>
+</body>
+</html>
