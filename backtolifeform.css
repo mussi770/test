@@ -2,6 +2,11 @@
    BACK TO LIFE — עיצוב לטפסים החיצוניים באוריגמי
    גרסה 1 — בסיס עובד לפני התאמה למחלקות האמיתיות של הטופס
    מחברים דרך: הגדרות הטופס ← קישור לקובץ CSS חיצוני
+   ------------------------------------------------------------
+   ✅ בדיקת קישור — עודכן: 2026-08-09 16:52 UTC
+   אם אתה רואה פס אדום עליון + הכיתוב הזה בראש הטופס,
+   הקישור ל-CSS תקין ונטען בהצלחה. אחרי האימות אפשר למחוק
+   את הבלוק הזה ואת ה-::before שבסוף הקובץ.
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Frank+Ruhl+Libre:wght@500;700&display=swap');
@@ -214,4 +219,21 @@ button[disabled] { opacity: .5; cursor: not-allowed; }
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
+}
+
+/* ------------------------------------------------------------
+   ⚠️ בדיקת קישור בלבד — למחיקה אחרי האימות
+   פס אדום + כיתוב שמופיע בראש העמוד. אם רואים אותו,
+   הקובץ החיצוני נטען בהצלחה.
+   ------------------------------------------------------------ */
+body::before {
+  content: "✅ CSS מחובר — 2026-08-09 16:52";
+  display: block;
+  background: #B4472F;
+  color: #fff;
+  font-family: var(--btl-font);
+  font-weight: 700;
+  text-align: center;
+  padding: 10px 14px;
+  letter-spacing: .01em;
 }
