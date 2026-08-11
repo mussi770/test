@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>אישור פגישת אימון</title>
+<style>
+  @media only screen and (max-width:600px){
+    .contact-col{ display:block !important; width:100% !important; }
+    .contact-gap{ display:none !important; }
+  }
+</style>
 </head>
 <body style="margin:0; padding:0; background:#E9EFEF;">
 
@@ -80,6 +86,47 @@
                   <td align="right" style="padding:10px 4px 14px 18px; font-size:16px; color:#16202E; line-height:1.6;">{{challenge}}</td>
                 </tr>
 
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== פרטי קשר בין הצדדים ===== -->
+          <tr>
+            <td dir="rtl" align="right" style="padding:26px 34px 4px;">
+              <div style="font-family:Georgia,'Frank Ruhl Libre',serif; font-size:18px; color:#16202E; margin-bottom:4px;">פרטים ליצירת קשר</div>
+              <div style="font-size:13.5px; color:#6E7A85;">כדי שתוכלו לתאם ולתקשר ישירות ביניכן:</div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:12px 34px 6px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" dir="rtl">
+                <tr>
+                  <!-- מאמנת -->
+                  <td class="contact-col" width="49%" valign="top" dir="rtl" align="right" style="background:#F3F7F6; border:1px solid #DCE7E4; border-radius:12px; padding:16px 18px;">
+                    <div style="font-size:12px; color:#1C7C86; font-weight:bold; letter-spacing:.03em;">המאמנת</div>
+                    <div style="font-size:16px; font-weight:bold; color:#16202E; margin-top:6px;">{{coach_name}}</div>
+                    <div style="font-size:14px; margin-top:8px;">
+                      <a href="tel:{{coach_phone}}" style="color:#1C7C86; text-decoration:none;">{{coach_phone}}</a>
+                    </div>
+                    <div style="font-size:14px; margin-top:4px; word-break:break-all;">
+                      <a href="mailto:{{coach_email}}" style="color:#1C7C86; text-decoration:none;">{{coach_email}}</a>
+                    </div>
+                  </td>
+
+                  <td class="contact-gap" width="2%" style="font-size:0; line-height:0;">&nbsp;</td>
+
+                  <!-- מתאמנת -->
+                  <td class="contact-col" width="49%" valign="top" dir="rtl" align="right" style="background:#F3F7F6; border:1px solid #DCE7E4; border-radius:12px; padding:16px 18px;">
+                    <div style="font-size:12px; color:#9A7B4F; font-weight:bold; letter-spacing:.03em;">המתאמנת</div>
+                    <div style="font-size:16px; font-weight:bold; color:#16202E; margin-top:6px;">{{trainee_name}}</div>
+                    <div style="font-size:14px; margin-top:8px;">
+                      <a href="tel:{{trainee_phone}}" style="color:#1C7C86; text-decoration:none;">{{trainee_phone}}</a>
+                    </div>
+                    <div style="font-size:14px; margin-top:4px; word-break:break-all;">
+                      <a href="mailto:{{trainee_email}}" style="color:#1C7C86; text-decoration:none;">{{trainee_email}}</a>
+                    </div>
+                  </td>
+                </tr>
               </table>
             </td>
           </tr>
