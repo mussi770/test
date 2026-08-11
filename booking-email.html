@@ -1,162 +1,106 @@
-<!DOCTYPE html>
-<html lang="he" dir="rtl" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>אישור פגישת אימון</title>
-<style>
-  @media only screen and (max-width:600px){
-    .contact-col{ display:block !important; width:100% !important; }
-    .contact-gap{ display:none !important; }
-  }
-</style>
-</head>
-<body style="margin:0; padding:0; background:#E9EFEF;">
-
-  <!-- preheader (טקסט תצוגה מקדימה נסתר) -->
-  <div style="display:none; max-height:0; overflow:hidden; opacity:0;">
-    פגישת האימון נקבעה — פרטי המועד בפנים.
-  </div>
-
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#E9EFEF;">
-    <tr>
-      <td align="center" style="padding:28px 12px;">
-
-        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px; max-width:600px; background:#FFFFFF; border-radius:16px; overflow:hidden; font-family:Arial,'Assistant',Helvetica,sans-serif; box-shadow:0 8px 30px rgba(20,32,46,.08);">
-
-          <!-- ===== Header (לוגו) ===== -->
-          <tr>
-            <td align="center" bgcolor="#FFFFFF" style="background:#FFFFFF; padding:26px 24px 20px;">
-              <!-- === מקום ללוגו של מיכל: החליפי את ה-src בכתובת הלוגו === -->
-              <img src="PUT-LOGO-URL-HERE"
-                   alt="Back to Life — מרכז לשיקום תנועתי של מיכל נהן"
-                   width="220"
-                   style="display:block; margin:0 auto; max-width:220px; width:60%; height:auto; border:0;">
-            </td>
-          </tr>
-
-          <!-- accent line -->
-          <tr><td style="height:4px; background:#1C7C86; font-size:0; line-height:0;">&nbsp;</td></tr>
-
-          <!-- ===== Body ===== -->
-          <tr>
-            <td dir="rtl" align="right" style="padding:34px 34px 8px;">
-              <h1 style="margin:0 0 10px; font-family:Georgia,'Frank Ruhl Libre',serif; font-size:24px; color:#16202E;">
-                פגישת האימון נקבעה בהצלחה! 🎉
-              </h1>
-              <p style="margin:0; font-size:16px; line-height:1.7; color:#6E7A85;">
-                שלום {{name}}, שמחות לאשר את קביעת הפגישה. ריכזנו כאן את כל הפרטים:
-              </p>
-            </td>
-          </tr>
-
-          <!-- ===== Details card ===== -->
-          <tr>
-            <td style="padding:22px 34px 6px;">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" dir="rtl" style="background:#F3F7F6; border:1px solid #DCE7E4; border-radius:12px;">
-
-                <tr>
-                  <td width="120" align="right" style="padding:14px 18px 6px; font-size:14px; color:#6E7A85;">תאריך</td>
-                  <td align="right" style="padding:14px 4px 6px 18px; font-size:16px; font-weight:bold; color:#16202E;">{{date}}</td>
-                </tr>
-                <tr><td colspan="2" style="border-top:1px solid #E4EDEA; font-size:0; line-height:0;">&nbsp;</td></tr>
-
-                <tr>
-                  <td align="right" style="padding:10px 18px 6px; font-size:14px; color:#6E7A85;">שעה</td>
-                  <td align="right" style="padding:10px 4px 6px 18px; font-size:16px; font-weight:bold; color:#16202E;">{{time}}</td>
-                </tr>
-                <tr><td colspan="2" style="border-top:1px solid #E4EDEA; font-size:0; line-height:0;">&nbsp;</td></tr>
-
-                <tr>
-                  <td align="right" style="padding:10px 18px 6px; font-size:14px; color:#6E7A85;">שם</td>
-                  <td align="right" style="padding:10px 4px 6px 18px; font-size:16px; color:#16202E;">{{name}}</td>
-                </tr>
-                <tr><td colspan="2" style="border-top:1px solid #E4EDEA; font-size:0; line-height:0;">&nbsp;</td></tr>
-
-                <tr>
-                  <td align="right" style="padding:10px 18px 6px; font-size:14px; color:#6E7A85;">שיעור / רמה</td>
-                  <td align="right" style="padding:10px 4px 6px 18px; font-size:16px; color:#16202E;">{{level}}</td>
-                </tr>
-                <tr><td colspan="2" style="border-top:1px solid #E4EDEA; font-size:0; line-height:0;">&nbsp;</td></tr>
-
-                <tr>
-                  <td align="right" style="padding:10px 18px 14px; font-size:14px; color:#6E7A85;">האתגר לטיפול</td>
-                  <td align="right" style="padding:10px 4px 14px 18px; font-size:16px; color:#16202E; line-height:1.6;">{{challenge}}</td>
-                </tr>
-
-              </table>
-            </td>
-          </tr>
-
-          <!-- ===== פרטי קשר בין הצדדים ===== -->
-          <tr>
-            <td dir="rtl" align="right" style="padding:26px 34px 4px;">
-              <div style="font-family:Georgia,'Frank Ruhl Libre',serif; font-size:18px; color:#16202E; margin-bottom:4px;">פרטים ליצירת קשר</div>
-              <div style="font-size:13.5px; color:#6E7A85;">כדי שתוכלו לתאם ולתקשר ישירות ביניכן:</div>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:12px 34px 6px;">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" dir="rtl">
-                <tr>
-                  <!-- מאמנת -->
-                  <td class="contact-col" width="49%" valign="top" dir="rtl" align="right" style="background:#F3F7F6; border:1px solid #DCE7E4; border-radius:12px; padding:16px 18px;">
-                    <div style="font-size:12px; color:#1C7C86; font-weight:bold; letter-spacing:.03em;">המאמנת</div>
-                    <div style="font-size:16px; font-weight:bold; color:#16202E; margin-top:6px;">{{coach_name}}</div>
-                    <div style="font-size:14px; margin-top:8px;">
-                      <a href="tel:{{coach_phone}}" style="color:#1C7C86; text-decoration:none;">{{coach_phone}}</a>
-                    </div>
-                    <div style="font-size:14px; margin-top:4px; word-break:break-all;">
-                      <a href="mailto:{{coach_email}}" style="color:#1C7C86; text-decoration:none;">{{coach_email}}</a>
-                    </div>
-                  </td>
-
-                  <td class="contact-gap" width="2%" style="font-size:0; line-height:0;">&nbsp;</td>
-
-                  <!-- מתאמנת -->
-                  <td class="contact-col" width="49%" valign="top" dir="rtl" align="right" style="background:#F3F7F6; border:1px solid #DCE7E4; border-radius:12px; padding:16px 18px;">
-                    <div style="font-size:12px; color:#9A7B4F; font-weight:bold; letter-spacing:.03em;">המתאמנת</div>
-                    <div style="font-size:16px; font-weight:bold; color:#16202E; margin-top:6px;">{{trainee_name}}</div>
-                    <div style="font-size:14px; margin-top:8px;">
-                      <a href="tel:{{trainee_phone}}" style="color:#1C7C86; text-decoration:none;">{{trainee_phone}}</a>
-                    </div>
-                    <div style="font-size:14px; margin-top:4px; word-break:break-all;">
-                      <a href="mailto:{{trainee_email}}" style="color:#1C7C86; text-decoration:none;">{{trainee_email}}</a>
-                    </div>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          <!-- note -->
-          <tr>
-            <td dir="rtl" align="right" style="padding:16px 34px 30px;">
-              <p style="margin:0; font-size:14px; line-height:1.7; color:#6E7A85;">
-                תזכורת תישלח לפני המפגש. צריכות לשנות מועד? פשוט השיבו למייל הזה.
-              </p>
-            </td>
-          </tr>
-
-          <!-- ===== Footer ===== -->
-          <tr>
-            <td align="center" bgcolor="#F3F7F6" style="background:#F3F7F6; border-top:1px solid #E4EDEA; padding:22px 24px;">
-              <div style="font-size:13px; color:#16202E; font-weight:bold;">Back to Life · מיכל נהן</div>
-              <div style="font-size:13px; color:#6E7A85; margin-top:8px;">
-                <a href="tel:+972500000000" style="color:#1C7C86; text-decoration:none;">052-000-0000</a>
-                &nbsp;·&nbsp;
-                <a href="mailto:info@backtolife.co.il" style="color:#1C7C86; text-decoration:none;">info@backtolife.co.il</a>
-              </div>
-              <div style="font-size:12px; color:#9AA6A6; margin-top:12px;">© 2026 Back to Life · כל הזכויות שמורות</div>
-            </td>
-          </tr>
-
-        </table>
-
-      </td>
-    </tr>
-  </table>
-
-</body>
-</html>
+<div dir="rtl" style="padding: 0; margin: 0;">
+<div style="display: none; max-height: 0; overflow: hidden; opacity: 0;">פגישת האימון נקבעה &mdash; פרטי המועד בפנים.</div>
+<table style="background: #E9EFEF;" role="presentation" width="100%" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="padding: 24px 10px;" align="center">
+<!--[if mso]><table role="presentation" align="center" width="600" cellpadding="0" cellspacing="0"><tr><td><![endif]-->
+<table style="width: 100%; max-width: 600px; background: #ffffff; border-radius: 16px; overflow: hidden; font-family: Arial, Assistant, Helvetica, sans-serif; box-shadow: rgba(20, 32, 46, 0.08) 0px 8px 30px;" role="presentation" width="100%" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="background: #ffffff; padding: 24px 20px 18px;" align="center" bgcolor="#FFFFFF"><img style="display: block; margin: 0 auto; max-width: 200px; width: 55%; height: auto; border: 0;" src="https://live-public.origamicloud.ms/file/?f=Z3lmdWhhN3F%2BBShSu5txHvQJrzqa2actU88pVDbBg8d%2Fc8ghw2ARuXXuNvaJ7l9zrrlyTpCvs0hQxhTbXJrNdKLCZDA7AvPgnrW7423kY1F%2FsDyn3m%2Fyc3FkQd820XNCZGmBdbDzNw%3D%3D98a6761269a9f0b2c12539e2ddcbed0aaeb55c4e95f1b87fe9655a5e9689223e9d1f7004b26e5680500cecc3bb3fe76cf10057eeab9d4815c90a7cc39ff0e3b3a2pzZGZhODk3" alt="Back to Life" width="200" /></td>
+</tr>
+<tr>
+<td style="height: 8px; background: #1c7c86; font-size: 0px; line-height: 0;">&nbsp;</td>
+</tr>
+<tr>
+<td dir="rtl" style="padding: 30px 24px 8px;" align="center">
+<h1 style="margin: 0 0 18px; font-family: Georgia, 'Frank Ruhl Libre', serif; font-size: 23px; color: #16202e; text-align: center; font-weight: bold;">פגישת האימון נקבעה בהצלחה! 🎉</h1>
+<div style="text-align: center; line-height: 0;">
+<div style="display: inline-block; vertical-align: middle; max-width: 100%; padding: 6px 14px; margin: 3px; background: #f3f7f6; border-radius: 999px;"><span style="display: block; font-family: Arial, sans-serif; font-size: 11px; color: #1c7c86; letter-spacing: .04em; margin-bottom: 2px;">מנטורית</span><span style="font-family: Arial, sans-serif; font-size: 15px; font-weight: bold; color: #16202e;">#שם מלא - מנטורית#</span></div>
+<div style="display: inline-block; vertical-align: middle; font-family: Georgia, serif; font-size: 18px; color: #9aa6a6; margin: 3px;">&amp;</div>
+<div style="display: inline-block; vertical-align: middle; max-width: 100%; padding: 6px 14px; margin: 3px; background: #fbf7f0; border-radius: 999px;"><span style="display: block; font-family: Arial, sans-serif; font-size: 11px; color: #9a7b4f; letter-spacing: .04em; margin-bottom: 2px;">מתאמנת</span><span style="font-family: Arial, sans-serif; font-size: 15px; font-weight: bold; color: #16202e;">#שם מלא - מתאמנת#</span></div>
+</div>
+<p style="margin: 16px 0 0; font-family: Arial, sans-serif; font-size: 16px; line-height: 1.7; color: #6e7a85;">שלום, שמחות לאשר את קביעת הפגישה. ריכזנו כאן את כל הפרטים:</p>
+</td>
+</tr>
+<tr>
+<td style="padding: 20px 24px 6px;">
+<table dir="rtl" style="background: #F3F7F6; border: 1px solid #DCE7E4; border-radius: 12px;" role="presentation" width="100%" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="padding: 14px 18px 6px; font-size: 14px; color: #6e7a85;" align="right" width="110">תאריך</td>
+<td style="padding: 14px 4px 6px 18px; font-size: 16px; font-weight: bold; color: #16202e;" align="right">#תאריך#</td>
+</tr>
+<tr>
+<td style="border-top: 1px solid #E4EDEA; font-size: 0; line-height: 0;" colspan="2">&nbsp;</td>
+</tr>
+<tr>
+<td style="padding: 10px 18px 6px; font-size: 14px; color: #6e7a85;" align="right">שעה</td>
+<td style="padding: 10px 4px 6px 18px; font-size: 16px; font-weight: bold; color: #16202e;" align="right">#שעה#</td>
+</tr>
+<tr>
+<td style="border-top: 1px solid #E4EDEA; font-size: 0; line-height: 0;" colspan="2">&nbsp;</td>
+</tr>
+<tr>
+<td style="padding: 10px 18px 6px; font-size: 14px; color: #6e7a85;" align="right">שיעור / רמה</td>
+<td style="padding: 10px 4px 6px 18px; font-size: 16px; color: #16202e;" align="right">#השיעור שאוחזת#</td>
+</tr>
+<tr>
+<td style="border-top: 1px solid #E4EDEA; font-size: 0; line-height: 0;" colspan="2">&nbsp;</td>
+</tr>
+<tr>
+<td style="padding: 10px 18px 14px; font-size: 14px; color: #6e7a85;" align="right">האתגר לטיפול</td>
+<td style="padding: 10px 4px 14px 18px; font-size: 16px; color: #16202e; line-height: 1.6;" align="right">#האתגר בטיפול#</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td dir="rtl" style="padding: 24px 24px 4px;" align="right">
+<div style="font-family: Georgia,'Frank Ruhl Libre',serif; font-size: 18px; color: #16202e; margin-bottom: 4px; font-weight: bold;">פרטים ליצירת קשר</div>
+<div style="font-size: 13.5px; color: #6e7a85;">כדי שתוכלו לתאם ולתקשר ישירות ביניכן:</div>
+</td>
+</tr>
+<tr>
+<td style="padding: 12px 24px 6px;" align="center">
+<!--[if mso]><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td width="50%" valign="top"><![endif]-->
+<div style="display: inline-block; vertical-align: top; width: 100%; max-width: 252px; margin: 0 0 12px;">
+<div dir="rtl" style="background: #F3F7F6; border: 1px solid #DCE7E4; border-radius: 12px; padding: 16px 18px; text-align: right;">
+<div style="font-size: 12px; color: #1c7c86; font-weight: bold; letter-spacing: .03em;">המאמנת</div>
+<div style="font-size: 16px; font-weight: bold; color: #16202e; margin-top: 6px;">#שם מלא - מנטורית#</div>
+<div style="font-size: 14px; margin-top: 8px;"><a style="color: #1c7c86; text-decoration: none;" href="tel:#טלפון - מנטורית#">#טלפון - מנטורית#</a></div>
+<div style="font-size: 14px; margin-top: 4px; word-break: break-all;"><a style="color: #1c7c86; text-decoration: none;" href="mailto:#מייל - מנטורית#">#מייל - מנטורית#</a></div>
+</div>
+</div>
+<!--[if mso]></td><td width="50%" valign="top"><![endif]-->
+<div style="display: inline-block; vertical-align: top; width: 100%; max-width: 252px; margin: 0 0 12px;">
+<div dir="rtl" style="background: #FBF7F0; border: 1px solid #EADFCB; border-radius: 12px; padding: 16px 18px; text-align: right;">
+<div style="font-size: 12px; color: #9a7b4f; font-weight: bold; letter-spacing: .03em;">המתאמנת</div>
+<div style="font-size: 16px; font-weight: bold; color: #16202e; margin-top: 6px;">#שם מלא - מתאמנת#</div>
+<div style="font-size: 14px; margin-top: 8px;"><a style="color: #9a7b4f; text-decoration: none;" href="tel:#פלאפון - מתאמנת#">#פלאפון - מתאמנת#</a></div>
+<div style="font-size: 14px; margin-top: 4px; word-break: break-all;"><a style="color: #9a7b4f; text-decoration: none;" href="mailto:#מייל- מתאמנת#">#מייל- מתאמנת#</a></div>
+</div>
+</div>
+<!--[if mso]></td></tr></table><![endif]-->
+</td>
+</tr>
+<tr>
+<td dir="rtl" style="padding: 14px 24px 28px;" align="right">
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #6e7a85;">תזכורת תישלח לפני המפגש.</p>
+</td>
+</tr>
+<tr>
+<td style="background: #f3f7f6; border-top: 1px solid #e4edea; padding: 22px 24px;" align="center" bgcolor="#F3F7F6">
+<div style="font-size: 12px; color: #9aa6a6;">&copy; 2026 Back to Life &middot; כל הזכויות שמורות</div>
+</td>
+</tr>
+</tbody>
+</table>
+<!--[if mso]></td></tr></table><![endif]-->
+</td>
+</tr>
+</tbody>
+</table>
+</div>
