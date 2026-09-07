@@ -12,21 +12,20 @@
     שני מצבים באותו קובץ:
 
     A) מצב רגיל (ברירת מחדל) — כשאין phone ב-URL:
-       הטופס המלא למילוי: סיבת יציאה, שם פרטי/משפחה, טלפון, מייל,
-       ואישור יציאה.
+       הטופס המלא: סיבת יציאה, שם פרטי/משפחה, טלפון, מייל, אישור.
 
-    B) מצב נעול — כשמגיע phone בשרשור ה-URL:
-       לא צריך למלא שם/פרטים. מוצג רק מספר הטלפון בשדה נעול
-       (ברור שהמספר הזה יוצא מהמועדון) + אישור + שליחה.
+    B) מצב מקוצר — כשמגיע phone בשרשור ה-URL:
+       נשארת שאלת סיבת היציאה + שדה הטלפון (במראה רגיל, נעול לעריכה
+       ומולא אוטומטית). לא צריך למלא שם/מייל.
 
     פרמטרים:
       - IDCRM : מזהה נסתר (נשלח ל-webhook, לא מוצג)
-      - phone : אם מגיע ב-URL → מפעיל את המצב הנעול (B)
+      - phone : אם מגיע ב-URL → מפעיל את מצב B
       - כל פרמטר נוסף שתשרשרי נקלט ונשלח ל-webhook.
 
     דוגמאות:
       מצב רגיל :  club-exit.html?IDCRM=12345
-      מצב נעול :  club-exit.html?IDCRM=12345&phone=0501234567
+      מצב מקוצר:  club-exit.html?IDCRM=12345&phone=0501234567
     ============================================================
   -->
 
@@ -64,6 +63,8 @@
     .head h1 { font-size: 22px; font-weight: 700; color: var(--ink); text-wrap: balance; }
     .head p { font-size: 14px; color: var(--ink-soft); }
 
+    #exitForm { display: flex; flex-direction: column; gap: 24px; }
+
     .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; display: flex; flex-direction: column; gap: 12px; }
     .panel .panel-title { font-size: 14px; font-weight: 700; color: var(--ink-soft); }
 
@@ -83,13 +84,10 @@
     input:focus, textarea:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(23, 163, 163, .15); }
     input.err, textarea.err { border-color: var(--error); box-shadow: 0 0 0 3px rgba(214, 88, 79, .12); }
 
-    /* מצב נעול — תיבת טלפון מודגשת */
-    .locked-label { font-size: 13px; font-weight: 700; color: var(--ink-soft); display: flex; align-items: center; gap: 6px; }
-    .phone-box { display: flex; align-items: center; gap: 10px; background: #f1efe9; border: 1px dashed #c9c2b6; border-radius: 12px; padding: 16px; }
-    .phone-box .lock { font-size: 18px; opacity: .7; }
-    .phone-box .num { flex: 1; font-size: 22px; font-weight: 700; letter-spacing: 1px; color: var(--ink); direction: ltr; text-align: right; font-variant-numeric: tabular-nums; }
-    .phone-box .tag { font-size: 11px; font-weight: 700; color: #fff; background: var(--teal-deep); padding: 4px 8px; border-radius: 999px; white-space: nowrap; }
-    .locked-hint { font-size: 12px; color: var(--ink-faint); }
+    /* שדה טלפון נעול — אותה נראות, פשוט לא ניתן לעריכה */
+    input[readonly] { background: #f4f1ec; color: var(--ink-soft); cursor: default; }
+    input[readonly]:focus { border-color: var(--border); box-shadow: none; }
+    .locked-note { font-size: 12px; color: var(--ink-faint); display: flex; align-items: center; gap: 5px; }
 
     .confirm { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--ink-soft); cursor: pointer; padding: 2px; }
     .confirm input { margin-top: 3px; accent-color: var(--teal); width: 17px; height: 17px; cursor: pointer; flex: 0 0 auto; }
@@ -122,50 +120,40 @@
     <div class="container" id="formWrap">
       <div class="head">
         <img src="https://back-to-life-command-center.vercel.app/icon-192.png" alt="Back to Life" onerror="this.outerHTML='<div class=\'logo\'>B2L</div>'" />
-        <h1 id="title">תהליך יציאה מהמועדון</h1>
+        <h1>תהליך יציאה מהמועדון</h1>
         <p id="subtitle"></p>
       </div>
 
       <form id="exitForm" novalidate>
-        <!-- ====== מצב רגיל (מוסתר אוטומטית כשמגיע phone ב-URL) ====== -->
-        <div id="fullOnly">
-          <div class="panel" style="margin-bottom:24px">
-            <p class="panel-title">תוכלי לשתף אותנו בהחלטה שלך?</p>
-            <div class="options">
-              <label class="opt"><input type="radio" name="reason" value="לא מצליחה להגיע לתכנים" /> לא מצליחה להגיע לתכנים</label>
-              <label class="opt"><input type="radio" name="reason" value="פחות נעזרת בדניאלה" /> פחות נעזרת בדניאלה</label>
-              <label class="opt"><input type="radio" name="reason" value="מרגישה שלא רלוונטי לי כרגע" /> מרגישה שלא רלוונטי לי כרגע</label>
-              <label class="opt"><input type="radio" name="reason" value="עומס כלכלי כרגע" /> עומס כלכלי כרגע</label>
-              <label class="opt"><input type="radio" name="reason" value="לוקחת הפסקה, אולי אחזור בעתיד" /> לוקחת הפסקה, אולי אחזור בעתיד</label>
-              <label class="opt"><input type="radio" name="reason" value="אחר" id="reasonOther" /> אחר</label>
-            </div>
-            <textarea id="reasonOtherText" name="reason_other" placeholder="ספרי לנו עוד..." style="display:none"></textarea>
+        <!-- ====== שאלת הסיבה — מוצגת תמיד (בשני המצבים) ====== -->
+        <div class="panel">
+          <p class="panel-title">תוכלי לשתף אותנו בהחלטה שלך?</p>
+          <div class="options">
+            <label class="opt"><input type="radio" name="reason" value="לא מצליחה להגיע לתכנים" /> לא מצליחה להגיע לתכנים</label>
+            <label class="opt"><input type="radio" name="reason" value="פחות נעזרת בדניאלה" /> פחות נעזרת בדניאלה</label>
+            <label class="opt"><input type="radio" name="reason" value="מרגישה שלא רלוונטי לי כרגע" /> מרגישה שלא רלוונטי לי כרגע</label>
+            <label class="opt"><input type="radio" name="reason" value="עומס כלכלי כרגע" /> עומס כלכלי כרגע</label>
+            <label class="opt"><input type="radio" name="reason" value="לוקחת הפסקה, אולי אחזור בעתיד" /> לוקחת הפסקה, אולי אחזור בעתיד</label>
+            <label class="opt"><input type="radio" name="reason" value="אחר" id="reasonOther" /> אחר</label>
           </div>
-
-          <div class="panel">
-            <div class="grid2">
-              <input type="text" id="first_name" name="first_name" placeholder="שם פרטי" autocomplete="given-name" />
-              <input type="text" id="last_name" name="last_name" placeholder="שם משפחה" autocomplete="family-name" />
-            </div>
-            <input type="tel" id="phoneEditable" name="phone" placeholder="טלפון (שבו את מתכתבת עם דניאלה)" inputmode="tel" autocomplete="tel" />
-            <input type="email" id="email" name="email" placeholder="כתובת מייל" inputmode="email" autocomplete="email" dir="ltr" style="text-align:right" />
-          </div>
+          <textarea id="reasonOtherText" name="reason_other" placeholder="ספרי לנו עוד..." style="display:none"></textarea>
         </div>
 
-        <!-- ====== מצב נעול (מוצג אוטומטית כשמגיע phone ב-URL) ====== -->
-        <div class="panel" id="lockedBlock" style="display:none">
-          <span class="locked-label">🔒 המספר שלך (נעול, לא ניתן לעריכה)</span>
-          <div class="phone-box">
-            <span class="lock">🔒</span>
-            <span class="num" id="phoneDisplay">—</span>
-            <span class="tag">יוצא מהמועדון</span>
+        <!-- ====== פרטים ====== -->
+        <div class="panel">
+          <div class="grid2" id="nameFields">
+            <input type="text" id="first_name" name="first_name" placeholder="שם פרטי" autocomplete="given-name" />
+            <input type="text" id="last_name" name="last_name" placeholder="שם משפחה" autocomplete="family-name" />
           </div>
-          <span class="locked-hint">אם המספר אינו נכון, אין לאשר — פני אלינו בהודעה חוזרת.</span>
-          <input type="hidden" id="phoneLocked" name="phone" value="" disabled />
+
+          <input type="tel" id="phone" name="phone" placeholder="טלפון (שבו את מתכתבת עם דניאלה)" inputmode="tel" autocomplete="tel" />
+          <span class="locked-note" id="lockedNote" style="display:none">🔒 המספר מולא עבורך ואינו ניתן לעריכה</span>
+
+          <input type="email" id="email" name="email" placeholder="כתובת מייל" inputmode="email" autocomplete="email" dir="ltr" style="text-align:right" />
         </div>
 
         <!-- אישור (בשני המצבים) -->
-        <label class="confirm" style="margin-top:24px">
+        <label class="confirm">
           <input type="checkbox" id="whatsappConfirm" name="whatsapp_confirmed" value="true" />
           <span>אני מאשרת שאני יוצאת מ-2 קבוצות הווטסאפ של המועדון (באחריותי לצאת מהן בעצמי).</span>
         </label>
@@ -173,8 +161,8 @@
         <!-- שדה נסתר: IDCRM (מגיע מה-URL, לא מוצג) -->
         <input type="hidden" id="IDCRM" name="IDCRM" value="" />
 
-        <button type="submit" class="submit" id="submitBtn" style="margin-top:24px" disabled>שליחה</button>
-        <div class="msg" id="msg" style="margin-top:16px"></div>
+        <button type="submit" class="submit" id="submitBtn" disabled>שליחה</button>
+        <div class="msg" id="msg"></div>
       </form>
     </div>
 
@@ -182,7 +170,7 @@
       <div class="thankyou" id="thankyou">
         <div class="icon">✓</div>
         <h2>הבקשה נשלחה</h2>
-        <p id="thankyouText">קיבלנו את הפרטים שלך. תודה ששיתפת אותנו — נטפל בבקשת היציאה בהקדם.</p>
+        <p>קיבלנו את הפרטים שלך. תודה ששיתפת אותנו — נטפל בבקשת היציאה בהקדם.</p>
       </div>
     </div>
   </main>
@@ -197,10 +185,10 @@
     var msg = document.getElementById("msg");
     var reasonOther = document.getElementById("reasonOther");
     var reasonOtherText = document.getElementById("reasonOtherText");
-    var fullOnly = document.getElementById("fullOnly");
-    var lockedBlock = document.getElementById("lockedBlock");
-    var phoneLocked = document.getElementById("phoneLocked");
-    var phoneEditable = document.getElementById("phoneEditable");
+    var nameFields = document.getElementById("nameFields");
+    var emailField = document.getElementById("email");
+    var phoneField = document.getElementById("phone");
+    var lockedNote = document.getElementById("lockedNote");
     var subtitle = document.getElementById("subtitle");
 
     // ---- IDCRM (נסתר) ----
@@ -211,20 +199,19 @@
     var LOCKED = !!(phoneParam && phoneParam.trim());
 
     if (LOCKED) {
-      // מצב נעול: מסתירים את הטופס הרגיל ומשביתים את השדות שלו כדי שלא יישלחו
-      fullOnly.style.display = "none";
-      fullOnly.querySelectorAll("input, textarea").forEach(function (el) { el.disabled = true; });
+      // מצב מקוצר: משאירים סיבה + טלפון (נעול). מסתירים שם/מייל.
+      nameFields.style.display = "none";
+      nameFields.querySelectorAll("input").forEach(function (el) { el.disabled = true; });
+      emailField.style.display = "none";
+      emailField.disabled = true;
 
-      // מציגים את תיבת הטלפון הנעולה
-      lockedBlock.style.display = "flex";
-      phoneLocked.disabled = false;
-      phoneLocked.value = phoneParam.trim();
-      document.getElementById("phoneDisplay").textContent = phoneParam.trim();
+      phoneField.value = phoneParam.trim();
+      phoneField.readOnly = true;
+      lockedNote.style.display = "flex";
 
-      subtitle.textContent = "המספר הבא מסומן ליציאה מהמועדון. יש לאשר כדי להשלים את הבקשה.";
+      subtitle.textContent = "נשארו רק שני פרטים לפני סיום התהליך.";
     } else {
-      // מצב רגיל: מילוי מראש של שדות אם הגיעו ב-URL; טלפון הנעול מושבת
-      phoneLocked.disabled = true;
+      // מצב רגיל: מילוי מראש אם הגיע ב-URL
       ["first_name", "last_name", "email"].forEach(function (key) {
         var val = urlParams.get(key);
         if (val !== null) { var el = document.getElementById(key); if (el) el.value = val; }
@@ -235,7 +222,7 @@
     // כפתור השליחה נפתח רק לאחר סימון האישור (בשני המצבים)
     confirmBox.addEventListener("change", function () { submitBtn.disabled = !confirmBox.checked; });
 
-    // תיבת "אחר" (מצב רגיל בלבד)
+    // תיבת "אחר"
     form.querySelectorAll('input[name="reason"]').forEach(function (r) {
       r.addEventListener("change", function () {
         reasonOtherText.style.display = reasonOther.checked ? "block" : "none";
@@ -245,17 +232,16 @@
     function markErr(el, on) { el.classList.toggle("err", on); }
 
     function validate() {
-      if (LOCKED) return { ok: true };  // במצב נעול אין מה למלא — האישור מספיק
-
       var ok = true;
       var reasonChecked = form.querySelector('input[name="reason"]:checked');
-      var first = document.getElementById("first_name");
-      var email = document.getElementById("email");
-
-      var firstOk = first.value.trim().length >= 1; markErr(first, !firstOk); if (!firstOk) ok = false;
-      var digits = phoneEditable.value.replace(/\D/g, ""); var phoneOk = digits.length >= 9; markErr(phoneEditable, !phoneOk); if (!phoneOk) ok = false;
-      var emailOk = email.value.trim() === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim()); markErr(email, !emailOk); if (!emailOk) ok = false;
       if (!reasonChecked) ok = false;
+
+      if (!LOCKED) {
+        var first = document.getElementById("first_name");
+        var firstOk = first.value.trim().length >= 1; markErr(first, !firstOk); if (!firstOk) ok = false;
+        var digits = phoneField.value.replace(/\D/g, ""); var phoneOk = digits.length >= 9; markErr(phoneField, !phoneOk); if (!phoneOk) ok = false;
+        var emailOk = emailField.value.trim() === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailField.value.trim()); markErr(emailField, !emailOk); if (!emailOk) ok = false;
+      }
       return { ok: ok, reasonChecked: reasonChecked };
     }
 
@@ -267,14 +253,14 @@
 
       var v = validate();
       if (!v.ok) {
-        showBad(!v.reasonChecked ? "נא לבחור סיבת יציאה ולמלא שם וטלפון." : "נא לתקן את השדות המסומנים.");
+        showBad(!v.reasonChecked ? "נא לבחור סיבת יציאה." : "נא לתקן את השדות המסומנים.");
         return;
       }
 
       // ====== בניית ה-payload ======
       var payload = new URLSearchParams();
       urlParams.forEach(function (value, key) { payload.set(key, value); });         // כל פרמטרי ה-URL (IDCRM, phone, וכו')
-      new FormData(form).forEach(function (value, key) { payload.set(key, value); }); // ערכי הטופס הפעילים בלבד
+      new FormData(form).forEach(function (value, key) { payload.set(key, value); }); // ערכי הטופס הפעילים
 
       if (!reasonOther.checked) payload.delete("reason_other");
       if (!confirmBox.checked) payload.set("whatsapp_confirmed", "false");
@@ -302,7 +288,6 @@
     function onSuccess() {
       var redirect = urlParams.get("redirect");
       if (redirect) { window.location.href = redirect; return; }
-      if (LOCKED) document.getElementById("thankyouText").textContent = "קיבלנו את אישור היציאה. נטפל בהסרה מהמועדון בהקדם.";
       document.getElementById("formWrap").style.display = "none";
       document.getElementById("thankyou").classList.add("show");
     }
