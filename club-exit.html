@@ -9,25 +9,24 @@
     ============================================================
     טופס "תהליך יציאה מהמועדון" — Back to Life
     ============================================================
-    מנגנון הפרמטרים (מה שביקשת):
+    שני מצבים באותו קובץ:
 
-    1) שרשור פרמטרים משלך ב-URL:
-       כל פרמטר שתוסיף ל-URL נקלט אוטומטית ונשלח ל-webhook יחד
-       עם שאר הפרטים. דוגמה:
-         club-exit.html?source=whatsapp&campaign=exit&agent=daniela
+    A) מצב רגיל (ברירת מחדל) — כשאין phone ב-URL:
+       הטופס המלא למילוי: סיבת יציאה, שם פרטי/משפחה, טלפון, מייל,
+       ואישור יציאה.
 
-    2) פרמטר נסתר IDCRM:
-       הוספת ?IDCRM=12345 ל-URL תישמר בשדה נסתר ותישלח ל-webhook,
-       בלי שתוצג למשתמשת:
-         club-exit.html?IDCRM=12345
+    B) מצב נעול — כשמגיע phone בשרשור ה-URL:
+       לא צריך למלא שם/פרטים. מוצג רק מספר הטלפון בשדה נעול
+       (ברור שהמספר הזה יוצא מהמועדון) + אישור + שליחה.
 
-    3) מילוי מראש של שדות גלויים (אופציונלי):
-         club-exit.html?first_name=נועה&last_name=כהן&phone=0501234567&email=a@b.com
+    פרמטרים:
+      - IDCRM : מזהה נסתר (נשלח ל-webhook, לא מוצג)
+      - phone : אם מגיע ב-URL → מפעיל את המצב הנעול (B)
+      - כל פרמטר נוסף שתשרשרי נקלט ונשלח ל-webhook.
 
-    4) הפניה אחרי שליחה (אופציונלי):
-         club-exit.html?redirect=https://your-site.com/thanks
-
-    בסיום, כל הפרטים נשלחים ל-webhook של Make.
+    דוגמאות:
+      מצב רגיל :  club-exit.html?IDCRM=12345
+      מצב נעול :  club-exit.html?IDCRM=12345&phone=0501234567
     ============================================================
   -->
 
@@ -44,192 +43,72 @@
       --error: #d6584f;
       --radius: 16px;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     html, body { height: 100%; }
-
     body {
       font-family: "Assistant", "Rubik", "Segoe UI", system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--ink);
-      -webkit-font-smoothing: antialiased;
-      display: flex;
-      flex-direction: column;
-      min-height: 100%;
-      line-height: 1.55;
+      background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased;
+      display: flex; flex-direction: column; min-height: 100%; line-height: 1.55;
     }
+    header { border-bottom: 1px solid var(--border); background: var(--surface); }
+    header .inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; height: 64px; display: flex; align-items: center; }
+    header .brand { font-size: 18px; font-weight: 700; color: var(--teal-deep); letter-spacing: .2px; }
+    header .brand small { color: var(--ink-faint); font-size: 13px; font-weight: 400; }
 
-    /* Header */
-    header {
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-    }
-    header .inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 24px;
-      height: 64px;
-      display: flex;
-      align-items: center;
-    }
-    header .brand {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--teal-deep);
-      letter-spacing: .2px;
-    }
-    header .brand small {
-      color: var(--ink-faint);
-      font-size: 13px;
-      font-weight: 400;
-    }
+    main { flex: 1; width: 100%; max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+    .container { max-width: 440px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; padding: 16px 0 40px; }
 
-    /* Main */
-    main {
-      flex: 1;
-      width: 100%;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 32px 24px;
-    }
-    .container {
-      max-width: 440px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      padding: 16px 0 40px;
-    }
+    .head { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+    .head img, .head .logo { width: 64px; height: 64px; border-radius: 14px; }
+    .head .logo { background: linear-gradient(135deg, var(--teal), var(--teal-deep)); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 22px; }
+    .head h1 { font-size: 22px; font-weight: 700; color: var(--ink); text-wrap: balance; }
+    .head p { font-size: 14px; color: var(--ink-soft); }
 
-    .head {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      text-align: center;
-    }
-    .head img {
-      width: 64px; height: 64px;
-      border-radius: 14px;
-    }
-    .head h1 {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--ink);
-    }
+    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+    .panel .panel-title { font-size: 14px; font-weight: 700; color: var(--ink-soft); }
 
-    .panel {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .panel .panel-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--ink-soft);
-    }
-
-    /* Radios */
     .options { display: flex; flex-direction: column; gap: 10px; }
-    .opt {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 14px;
-      color: var(--ink-soft);
-      cursor: pointer;
-      padding: 6px 8px;
-      border-radius: 10px;
-      transition: background .15s;
-    }
+    .opt { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--ink-soft); cursor: pointer; padding: 6px 8px; border-radius: 10px; transition: background .15s; }
     .opt:hover { background: #f4f1ec; }
     .opt input { accent-color: var(--teal); width: 17px; height: 17px; cursor: pointer; }
 
-    /* Text inputs */
     .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    input[type="text"],
-    input[type="tel"],
-    input[type="email"],
-    textarea {
-      width: 100%;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
-      font-size: 14px;
-      font-family: inherit;
-      color: var(--ink);
-      background: #fff;
+    input[type="text"], input[type="tel"], input[type="email"], textarea {
+      width: 100%; border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px;
+      font-size: 14px; font-family: inherit; color: var(--ink); background: #fff;
       transition: border-color .15s, box-shadow .15s;
     }
     textarea { resize: vertical; min-height: 74px; }
     input::placeholder, textarea::placeholder { color: var(--ink-faint); }
-    input:focus, textarea:focus {
-      outline: none;
-      border-color: var(--teal);
-      box-shadow: 0 0 0 3px rgba(23, 163, 163, .15);
-    }
+    input:focus, textarea:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(23, 163, 163, .15); }
     input.err, textarea.err { border-color: var(--error); box-shadow: 0 0 0 3px rgba(214, 88, 79, .12); }
 
-    /* Confirm checkbox */
-    .confirm {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 14px;
-      color: var(--ink-soft);
-      cursor: pointer;
-      padding: 2px;
-    }
+    /* מצב נעול — תיבת טלפון מודגשת */
+    .locked-label { font-size: 13px; font-weight: 700; color: var(--ink-soft); display: flex; align-items: center; gap: 6px; }
+    .phone-box { display: flex; align-items: center; gap: 10px; background: #f1efe9; border: 1px dashed #c9c2b6; border-radius: 12px; padding: 16px; }
+    .phone-box .lock { font-size: 18px; opacity: .7; }
+    .phone-box .num { flex: 1; font-size: 22px; font-weight: 700; letter-spacing: 1px; color: var(--ink); direction: ltr; text-align: right; font-variant-numeric: tabular-nums; }
+    .phone-box .tag { font-size: 11px; font-weight: 700; color: #fff; background: var(--teal-deep); padding: 4px 8px; border-radius: 999px; white-space: nowrap; }
+    .locked-hint { font-size: 12px; color: var(--ink-faint); }
+
+    .confirm { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--ink-soft); cursor: pointer; padding: 2px; }
     .confirm input { margin-top: 3px; accent-color: var(--teal); width: 17px; height: 17px; cursor: pointer; flex: 0 0 auto; }
 
-    /* Button */
-    button.submit {
-      padding: 13px 16px;
-      border-radius: 10px;
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-      background: var(--teal);
-      border: none;
-      cursor: pointer;
-      font-family: inherit;
-      transition: background .15s, opacity .15s;
-    }
+    button.submit { padding: 13px 16px; border-radius: 10px; font-size: 15px; font-weight: 700; color: #fff; background: var(--teal); border: none; cursor: pointer; font-family: inherit; transition: background .15s, opacity .15s; }
     button.submit:hover:not(:disabled) { background: var(--teal-deep); }
     button.submit:disabled { opacity: .4; cursor: not-allowed; }
 
-    .msg {
-      display: none;
-      font-size: 14px;
-      text-align: center;
-      padding: 12px;
-      border-radius: 10px;
-    }
+    .msg { display: none; font-size: 14px; text-align: center; padding: 12px; border-radius: 10px; }
     .msg.bad { display: block; background: rgba(214,88,79,.1); color: var(--error); }
 
-    /* Thank-you */
     .thankyou { display: none; text-align: center; padding: 8px 0; }
     .thankyou.show { display: block; }
-    .thankyou .icon {
-      width: 66px; height: 66px; margin: 0 auto 16px;
-      border-radius: 50%;
-      background: rgba(23,163,163,.12);
-      border: 2px solid var(--teal);
-      display: grid; place-items: center;
-      font-size: 30px; color: var(--teal-deep);
-    }
+    .thankyou .icon { width: 66px; height: 66px; margin: 0 auto 16px; border-radius: 50%; background: rgba(23,163,163,.12); border: 2px solid var(--teal); display: grid; place-items: center; font-size: 30px; color: var(--teal-deep); }
     .thankyou h2 { font-size: 20px; margin-bottom: 8px; color: var(--ink); }
     .thankyou p { color: var(--ink-soft); font-size: 14px; }
 
-    @media (max-width: 480px) {
-      main { padding: 20px 16px; }
-      .grid2 { grid-template-columns: 1fr; }
-    }
+    :focus-visible { outline: 2px solid var(--teal-deep); outline-offset: 2px; }
+    @media (max-width: 480px) { main { padding: 20px 16px; } .grid2 { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -242,38 +121,51 @@
   <main>
     <div class="container" id="formWrap">
       <div class="head">
-        <img src="https://back-to-life-command-center.vercel.app/icon-192.png" alt="Back to Life"
-             onerror="this.style.display='none'" />
-        <h1>תהליך יציאה מהמועדון</h1>
+        <img src="https://back-to-life-command-center.vercel.app/icon-192.png" alt="Back to Life" onerror="this.outerHTML='<div class=\'logo\'>B2L</div>'" />
+        <h1 id="title">תהליך יציאה מהמועדון</h1>
+        <p id="subtitle"></p>
       </div>
 
       <form id="exitForm" novalidate>
-        <!-- סיבת היציאה -->
-        <div class="panel">
-          <p class="panel-title">תוכלי לשתף אותנו בהחלטה שלך?</p>
-          <div class="options">
-            <label class="opt"><input type="radio" name="reason" value="לא מצליחה להגיע לתכנים" /> לא מצליחה להגיע לתכנים</label>
-            <label class="opt"><input type="radio" name="reason" value="פחות נעזרת בדניאלה" /> פחות נעזרת בדניאלה</label>
-            <label class="opt"><input type="radio" name="reason" value="מרגישה שלא רלוונטי לי כרגע" /> מרגישה שלא רלוונטי לי כרגע</label>
-            <label class="opt"><input type="radio" name="reason" value="עומס כלכלי כרגע" /> עומס כלכלי כרגע</label>
-            <label class="opt"><input type="radio" name="reason" value="לוקחת הפסקה, אולי אחזור בעתיד" /> לוקחת הפסקה, אולי אחזור בעתיד</label>
-            <label class="opt"><input type="radio" name="reason" value="אחר" id="reasonOther" /> אחר</label>
+        <!-- ====== מצב רגיל (מוסתר אוטומטית כשמגיע phone ב-URL) ====== -->
+        <div id="fullOnly">
+          <div class="panel" style="margin-bottom:24px">
+            <p class="panel-title">תוכלי לשתף אותנו בהחלטה שלך?</p>
+            <div class="options">
+              <label class="opt"><input type="radio" name="reason" value="לא מצליחה להגיע לתכנים" /> לא מצליחה להגיע לתכנים</label>
+              <label class="opt"><input type="radio" name="reason" value="פחות נעזרת בדניאלה" /> פחות נעזרת בדניאלה</label>
+              <label class="opt"><input type="radio" name="reason" value="מרגישה שלא רלוונטי לי כרגע" /> מרגישה שלא רלוונטי לי כרגע</label>
+              <label class="opt"><input type="radio" name="reason" value="עומס כלכלי כרגע" /> עומס כלכלי כרגע</label>
+              <label class="opt"><input type="radio" name="reason" value="לוקחת הפסקה, אולי אחזור בעתיד" /> לוקחת הפסקה, אולי אחזור בעתיד</label>
+              <label class="opt"><input type="radio" name="reason" value="אחר" id="reasonOther" /> אחר</label>
+            </div>
+            <textarea id="reasonOtherText" name="reason_other" placeholder="ספרי לנו עוד..." style="display:none"></textarea>
           </div>
-          <textarea id="reasonOtherText" name="reason_other" placeholder="ספרי לנו עוד..." style="display:none"></textarea>
+
+          <div class="panel">
+            <div class="grid2">
+              <input type="text" id="first_name" name="first_name" placeholder="שם פרטי" autocomplete="given-name" />
+              <input type="text" id="last_name" name="last_name" placeholder="שם משפחה" autocomplete="family-name" />
+            </div>
+            <input type="tel" id="phoneEditable" name="phone" placeholder="טלפון (שבו את מתכתבת עם דניאלה)" inputmode="tel" autocomplete="tel" />
+            <input type="email" id="email" name="email" placeholder="כתובת מייל" inputmode="email" autocomplete="email" dir="ltr" style="text-align:right" />
+          </div>
         </div>
 
-        <!-- פרטים -->
-        <div class="panel">
-          <div class="grid2">
-            <input type="text" id="first_name" name="first_name" placeholder="שם פרטי" autocomplete="given-name" />
-            <input type="text" id="last_name" name="last_name" placeholder="שם משפחה" autocomplete="family-name" />
+        <!-- ====== מצב נעול (מוצג אוטומטית כשמגיע phone ב-URL) ====== -->
+        <div class="panel" id="lockedBlock" style="display:none">
+          <span class="locked-label">🔒 המספר שלך (נעול, לא ניתן לעריכה)</span>
+          <div class="phone-box">
+            <span class="lock">🔒</span>
+            <span class="num" id="phoneDisplay">—</span>
+            <span class="tag">יוצא מהמועדון</span>
           </div>
-          <input type="tel" id="phone" name="phone" placeholder="טלפון (שבו את מתכתבת עם דניאלה)" inputmode="tel" autocomplete="tel" />
-          <input type="email" id="email" name="email" placeholder="כתובת מייל" inputmode="email" autocomplete="email" dir="ltr" style="text-align:right" />
+          <span class="locked-hint">אם המספר אינו נכון, אין לאשר — פני אלינו בהודעה חוזרת.</span>
+          <input type="hidden" id="phoneLocked" name="phone" value="" disabled />
         </div>
 
-        <!-- אישור יציאה מקבוצות הווטסאפ -->
-        <label class="confirm">
+        <!-- אישור (בשני המצבים) -->
+        <label class="confirm" style="margin-top:24px">
           <input type="checkbox" id="whatsappConfirm" name="whatsapp_confirmed" value="true" />
           <span>אני מאשרת שאני יוצאת מ-2 קבוצות הווטסאפ של המועדון (באחריותי לצאת מהן בעצמי).</span>
         </label>
@@ -281,37 +173,23 @@
         <!-- שדה נסתר: IDCRM (מגיע מה-URL, לא מוצג) -->
         <input type="hidden" id="IDCRM" name="IDCRM" value="" />
 
-        <button type="submit" class="submit" id="submitBtn" disabled>שליחה</button>
-
-        <div class="msg" id="msg"></div>
+        <button type="submit" class="submit" id="submitBtn" style="margin-top:24px" disabled>שליחה</button>
+        <div class="msg" id="msg" style="margin-top:16px"></div>
       </form>
     </div>
 
-    <!-- מסך תודה -->
     <div class="container">
       <div class="thankyou" id="thankyou">
         <div class="icon">✓</div>
         <h2>הבקשה נשלחה</h2>
-        <p>קיבלנו את הפרטים שלך. תודה ששיתפת אותנו — נטפל בבקשת היציאה בהקדם.</p>
+        <p id="thankyouText">קיבלנו את הפרטים שלך. תודה ששיתפת אותנו — נטפל בבקשת היציאה בהקדם.</p>
       </div>
     </div>
   </main>
 
   <script>
-    // ====== הגדרות ======
     var WEBHOOK_URL = "https://hook.eu1.make.com/h6f2dg78wbcpl4l1lk8euxwg2xo6dwtu";
-
-    // כל הפרמטרים שמגיעים מה-URL (כולל IDCRM וכל פרמטר שתשרשר בעצמך)
     var urlParams = new URLSearchParams(window.location.search);
-
-    // ---- מילוי מראש של שדות מתוך ה-URL ----
-    ["first_name", "last_name", "phone", "email", "IDCRM"].forEach(function (key) {
-      var val = urlParams.get(key);
-      if (val !== null) {
-        var el = document.getElementById(key);
-        if (el) el.value = val;
-      }
-    });
 
     var form = document.getElementById("exitForm");
     var submitBtn = document.getElementById("submitBtn");
@@ -319,13 +197,45 @@
     var msg = document.getElementById("msg");
     var reasonOther = document.getElementById("reasonOther");
     var reasonOtherText = document.getElementById("reasonOtherText");
+    var fullOnly = document.getElementById("fullOnly");
+    var lockedBlock = document.getElementById("lockedBlock");
+    var phoneLocked = document.getElementById("phoneLocked");
+    var phoneEditable = document.getElementById("phoneEditable");
+    var subtitle = document.getElementById("subtitle");
 
-    // כפתור השליחה נפתח רק לאחר אישור היציאה מקבוצות הווטסאפ (כמו במקור)
-    confirmBox.addEventListener("change", function () {
-      submitBtn.disabled = !confirmBox.checked;
-    });
+    // ---- IDCRM (נסתר) ----
+    document.getElementById("IDCRM").value = urlParams.get("IDCRM") || "";
 
-    // הצגת תיבת טקסט חופשי כאשר נבחר "אחר"
+    // ---- זיהוי מצב: האם הגיע phone בשרשור? ----
+    var phoneParam = urlParams.get("phone");
+    var LOCKED = !!(phoneParam && phoneParam.trim());
+
+    if (LOCKED) {
+      // מצב נעול: מסתירים את הטופס הרגיל ומשביתים את השדות שלו כדי שלא יישלחו
+      fullOnly.style.display = "none";
+      fullOnly.querySelectorAll("input, textarea").forEach(function (el) { el.disabled = true; });
+
+      // מציגים את תיבת הטלפון הנעולה
+      lockedBlock.style.display = "flex";
+      phoneLocked.disabled = false;
+      phoneLocked.value = phoneParam.trim();
+      document.getElementById("phoneDisplay").textContent = phoneParam.trim();
+
+      subtitle.textContent = "המספר הבא מסומן ליציאה מהמועדון. יש לאשר כדי להשלים את הבקשה.";
+    } else {
+      // מצב רגיל: מילוי מראש של שדות אם הגיעו ב-URL; טלפון הנעול מושבת
+      phoneLocked.disabled = true;
+      ["first_name", "last_name", "email"].forEach(function (key) {
+        var val = urlParams.get(key);
+        if (val !== null) { var el = document.getElementById(key); if (el) el.value = val; }
+      });
+      subtitle.textContent = "מלאי את הפרטים ונחזור אלייך בהקדם.";
+    }
+
+    // כפתור השליחה נפתח רק לאחר סימון האישור (בשני המצבים)
+    confirmBox.addEventListener("change", function () { submitBtn.disabled = !confirmBox.checked; });
+
+    // תיבת "אחר" (מצב רגיל בלבד)
     form.querySelectorAll('input[name="reason"]').forEach(function (r) {
       r.addEventListener("change", function () {
         reasonOtherText.style.display = reasonOther.checked ? "block" : "none";
@@ -335,25 +245,17 @@
     function markErr(el, on) { el.classList.toggle("err", on); }
 
     function validate() {
-      var ok = true;
+      if (LOCKED) return { ok: true };  // במצב נעול אין מה למלא — האישור מספיק
 
+      var ok = true;
       var reasonChecked = form.querySelector('input[name="reason"]:checked');
       var first = document.getElementById("first_name");
-      var phone = document.getElementById("phone");
       var email = document.getElementById("email");
 
-      var firstOk = first.value.trim().length >= 1;
-      markErr(first, !firstOk); if (!firstOk) ok = false;
-
-      var digits = phone.value.replace(/\D/g, "");
-      var phoneOk = digits.length >= 9;
-      markErr(phone, !phoneOk); if (!phoneOk) ok = false;
-
-      var emailOk = email.value.trim() === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
-      markErr(email, !emailOk); if (!emailOk) ok = false;
-
+      var firstOk = first.value.trim().length >= 1; markErr(first, !firstOk); if (!firstOk) ok = false;
+      var digits = phoneEditable.value.replace(/\D/g, ""); var phoneOk = digits.length >= 9; markErr(phoneEditable, !phoneOk); if (!phoneOk) ok = false;
+      var emailOk = email.value.trim() === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim()); markErr(email, !emailOk); if (!emailOk) ok = false;
       if (!reasonChecked) ok = false;
-
       return { ok: ok, reasonChecked: reasonChecked };
     }
 
@@ -370,27 +272,16 @@
       }
 
       // ====== בניית ה-payload ======
-      // מתחילים מכל פרמטרי ה-URL (שרשור חופשי + IDCRM), ואז מוסיפים/דורסים
-      // עם הערכים מהטופס עצמו.
       var payload = new URLSearchParams();
+      urlParams.forEach(function (value, key) { payload.set(key, value); });         // כל פרמטרי ה-URL (IDCRM, phone, וכו')
+      new FormData(form).forEach(function (value, key) { payload.set(key, value); }); // ערכי הטופס הפעילים בלבד
 
-      // 1) כל פרמטר שהגיע ב-URL
-      urlParams.forEach(function (value, key) { payload.set(key, value); });
-
-      // 2) הערכים מהטופס (מנצחים על ה-URL)
-      new FormData(form).forEach(function (value, key) { payload.set(key, value); });
-
-      // אם לא סומן "אחר" – אין טעם לשלוח את תיבת הטקסט החופשי
       if (!reasonOther.checked) payload.delete("reason_other");
-      // אם לא סומן אישור הווטסאפ – מסמנים false
       if (!confirmBox.checked) payload.set("whatsapp_confirmed", "false");
-
-      // 3) מטא-דאטה
+      payload.set("form", LOCKED ? "club-exit-confirm" : "club-exit");
       payload.set("submitted_at", new Date().toISOString());
       payload.set("page_url", window.location.href);
-      payload.set("form", "club-exit");
 
-      // ====== שליחה ל-webhook ======
       submitBtn.disabled = true;
       submitBtn.textContent = "שולח...";
 
@@ -399,10 +290,7 @@
         headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
         body: payload.toString()
       })
-        .then(function (res) {
-          if (!res.ok) throw new Error("HTTP " + res.status);
-          onSuccess();
-        })
+        .then(function (res) { if (!res.ok) throw new Error("HTTP " + res.status); onSuccess(); })
         .catch(function (err) {
           submitBtn.disabled = false;
           submitBtn.textContent = "שליחה";
@@ -414,6 +302,7 @@
     function onSuccess() {
       var redirect = urlParams.get("redirect");
       if (redirect) { window.location.href = redirect; return; }
+      if (LOCKED) document.getElementById("thankyouText").textContent = "קיבלנו את אישור היציאה. נטפל בהסרה מהמועדון בהקדם.";
       document.getElementById("formWrap").style.display = "none";
       document.getElementById("thankyou").classList.add("show");
     }
